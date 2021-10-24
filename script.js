@@ -5,7 +5,8 @@ const time = document.querySelector('.time');
 // const currentTime = date.toLocaleTimeString();
 const appDate = document.querySelector('.date');
 let bgNum;
-let ln;
+let ln = 'en';
+let greetingText;
 let playNum = 0;
 
 function showTime() {
@@ -19,7 +20,14 @@ function showTime() {
 function showDate() {
     let date = new Date();
     let options = { weekday: 'long', month: 'long', day: 'numeric' };
-    let currentDate = date.toLocaleDateString('en-En', options);
+    let stringLn;
+    if (ln == 'en') {
+        stringLn = 'en-En';
+    } else if (ln == 'ru') {
+        stringLn = 'ru-Ru';
+    }
+    // let currentDate = date.toLocaleDateString('ru-Ru', options);
+    let currentDate = date.toLocaleDateString(stringLn, options);
     appDate.textContent = currentDate;
 }
 
@@ -49,22 +57,54 @@ function getTimeOfDay() {
     let date = new Date();
     let hours = date.getHours();
     let timeOfDay;
-    if (hours > 6 && hours < 13) {
-        timeOfDay = 'morning';
-    } else if (hours > 12 && hours < 18) {
-        timeOfDay = 'afternoon';
-    } else if (hours > 17 && hours < 24) {
-        timeOfDay = 'evening';
-    } else {
-        timeOfDay = 'night';
+
+
+    if (ln == 'en') {
+        if (hours > 6 && hours < 13) {
+            timeOfDay = 'morning';
+        } else if (hours > 12 && hours < 18) {
+            timeOfDay = 'afternoon';
+        } else if (hours > 17 && hours < 24) {
+            timeOfDay = 'evening';
+        } else {
+            timeOfDay = 'night';
+        }
+    } else if (ln == 'ru') {
+        if (hours > 6 && hours < 13) {
+            greetingText = 'Доброе утро';
+            timeOfDay = 'утро';
+        } else if (hours > 12 && hours < 18) {
+            greetingText = 'Добрый день';
+            timeOfDay = 'день';
+        } else if (hours > 17 && hours < 24) {
+            greetingText = 'Добрый вечер';
+            timeOfDay = 'вечер';
+        } else {
+            greetingText = 'Доброй ночи';
+            timeOfDay = 'ночь';
+        }
     }
     return timeOfDay;
 }
 
 function showGreeting() {
     let timeOfDay = getTimeOfDay();
-    let greetingText = `Good ${timeOfDay},`;
-    greeting.textContent = greetingText;
+    console.log(ln);
+    console.log(timeOfDay);
+    if (ln == 'en') {
+        greetingText = `Good ${timeOfDay}`;
+    }
+    // else if (ln == 'ru') {
+    //     greetingText = `Добрый ${timeOfDay}`;
+    // }
+    console.log(greetingTranslation[ln]);
+    console.log(greetingText);
+    greetingTranslation[ln].forEach(el => {
+        if (greetingText == el) {
+            greeting.textContent = el;
+        }
+    })
+
     // greeting.textContent = greetingTranslation.ln[0];
 }
 
@@ -160,21 +200,35 @@ const humidity = document.querySelector('.humidity');
 let url;
 
 city.addEventListener('change', (event) => {
-    url = `https://api.openweathermap.org/data/2.5/weather?q=${event.target.value}&lang=ru&appid=251f169de2acd1482ee4e621040a7f0f&units=metric`;
+    url = `https://api.openweathermap.org/data/2.5/weather?q=${event.target.value}&lang=${ln}&appid=251f169de2acd1482ee4e621040a7f0f&units=metric`;
     getWeather(url);
 })
 
 async function getWeather(url) {
-    url = url || `https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=be&appid=251f169de2acd1482ee4e621040a7f0f&units=metric`;
-    const res = await fetch(url);
-    const data = await res.json();
-    weatherIcon.className = 'weather-icon owf';
-    weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-    temperature.textContent = `${Math.floor(data.main.temp)}°C`;
-    weatherDescription.textContent = data.weather[0].description;
-    wind.textContent = `Скорость ветра: ${Math.floor(data.wind.speed)} м/с`;
-    humidity.textContent = `Влажность: ${Math.floor(data.main.humidity)}%`;
-    console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
+    try {
+        url = url || `https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=${ln}&appid=251f169de2acd1482ee4e621040a7f0f&units=metric`;
+        const res = await fetch(url);
+        const data = await res.json();
+        weatherIcon.className = 'weather-icon owf';
+        weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+        temperature.textContent = `${Math.floor(data.main.temp)}°C`;
+        weatherDescription.textContent = data.weather[0].description;
+        if (ln == 'en') {
+            wind.textContent = `Wind speed: ${Math.floor(data.wind.speed)} m/s`;
+            humidity.textContent = `Humidity: ${Math.floor(data.main.humidity)}%`;
+        } else if (ln == 'ru') {
+            wind.textContent = `Скорость ветра: ${Math.floor(data.wind.speed)} м/с`;
+            humidity.textContent = `Влажность: ${Math.floor(data.main.humidity)}%`;
+        }
+        // document.querySelector('.weather-error').style.display = 'none';
+        console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
+    } catch (e) {
+        document.querySelector('.weather-error').textContent = 'Error! City is not found';
+        temperature.style.display = 'none';
+        weatherDescription.style.display = 'none';
+        wind.style.display = 'none';
+        humidity.style.display = 'none';
+    }
 }
 
 getWeather();
@@ -299,7 +353,14 @@ const greetingTranslation = {
     ru: ['Доброе утро', 'Добрый день', 'Добрый вечер', 'Доброй ночи']
 }
 
-console.log(greetingTranslation.en[0]);
+let enGreet = greetingTranslation[ln][0];
+// greetingTranslation[ln].forEach(el => {
+//     if (greetingText == el) {
+//         console.log(el);
+//     }
+// })
+
+// console.log(enGreet);
 
 //getting bg from API
 
@@ -313,3 +374,10 @@ async function getLinkToImage() {
 }
 
 getLinkToImage();
+
+//settings
+const setBtn = document.querySelector('.settings-icon');
+
+setBtn.addEventListener('click', () => {
+    document.getElementById('menu-settings').classList.toggle('menu-show');
+});
