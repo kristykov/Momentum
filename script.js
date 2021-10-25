@@ -249,18 +249,24 @@ async function getQuotes() {
 
 getQuotes().then(data => {
     console.log(data);
-    let randomQuoteNum = 1;
-    // if (ln == "en") {
-
-    // }
+    // let randomQuoteNum = 1;
+    console.log(ln);
     changeQuote.addEventListener('click', () => {
-        randomQuoteNum = Math.floor(Math.random() * (0 - 3) + 3);
-        quote.textContent = `${data[randomQuoteNum].text}`;
-        author.textContent = `${data[randomQuoteNum].author}`;
-    });
+        console.log(ln);
+        let randomQuoteNum = 1;
+        if (ln == "en") {
+            randomQuoteNum = Math.floor(Math.random() * (0 - 3) + 3);
+            quote.textContent = `${data[randomQuoteNum].textEn}`;
+            author.textContent = `${data[randomQuoteNum].authorEn}`;
+        } else if (ln == "ru") {
+            randomQuoteNum = Math.floor(Math.random() * (0 - 3) + 3);
+            quote.textContent = `${data[randomQuoteNum].textRu}`;
+            author.textContent = `${data[randomQuoteNum].authorRu}`;
+        }
+    })
 });
 
-getQuotes();
+// getQuotes();
 
 //player
 const btn = document.querySelector('.play');
@@ -397,11 +403,17 @@ document.querySelector('.lang-switch').addEventListener('click', () => {
         ln = 'ru';
         getWeather();
         translateSettings();
+        quote.textContent = `Сложность программы растет до тех пор, пока не превысит способности программиста`;
+        author.textContent = `Артур Блох. Законы Мэрфи`;
+        document.querySelector('.city').value = "Минск";
     } else {
         document.querySelector('.btn-lang').style = "left: 0";
         ln = 'en';
         translateSettings();
         getWeather();
+        quote.textContent = `A computer program does what you tell it to do, not what you want it to do`;
+        author.textContent = `Arthur Bloch, Murphy's Law`;
+        document.querySelector('.city').value = "Minsk";
     }
 });
 
