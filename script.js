@@ -8,6 +8,7 @@ let bgNum;
 let ln = 'en';
 let greetingText;
 let playNum = 0;
+let bg = 'unsplash';
 
 function showTime() {
     let date = new Date();
@@ -141,22 +142,21 @@ getRandomNumber();
 function setBg() {
     let timeOfDay = getTimeOfDay();
     const img = new Image();
-    getLinkToImage().then(url => {
-        img.src = url;
+    if (bg == 'unsplash') {
+        getLinkToImage().then(url => {
+            img.src = url;
+            img.onload = () => {
+                document.body.style.backgroundImage = `url(${url})`;
+            };
+        });
+    } else if (bg == 'git') {
+        img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`;
         img.onload = () => {
-            document.body.style.backgroundImage = `url(${url})`;
+            document.body.style.backgroundImage = `url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg')`;
         };
-    });
-    // console.log(url);
-    // img.src = url;
-    // img.onload = () => {
-    //     document.body.style.backgroundImage = `url(${url})`;
-    // };
-    // img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`;
-    // img.onload = () => {
-    //     document.body.style.backgroundImage = `url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg')`;
-    // };
+    }
 }
+
 setBg();
 
 // background slider 
@@ -352,7 +352,7 @@ const greetingTranslation = {
     en: ['Good morning', 'Good afternoon', 'Good evening', 'Good night'],
     be: ['Добрай ранiцы', 'Добры дзень', 'Добры вечар', 'Дабранач'],
     ru: ['Доброе утро', 'Добрый день', 'Добрый вечер', 'Доброй ночи']
-}
+};
 
 let enGreet = greetingTranslation[ln][0];
 // greetingTranslation[ln].forEach(el => {
@@ -381,16 +381,117 @@ const setBtn = document.querySelector('.settings-icon');
 
 setBtn.addEventListener('click', () => {
     document.getElementById('menu-settings').classList.toggle('menu-show');
+    if (slideNext.style.display == "block") {
+        slideNext.style = "display: none";
+    } else {
+        slideNext.style = "display: block";
+    }
 });
 
 document.querySelector('.lang-switch').addEventListener('click', () => {
     if (ln == "en") {
-        document.querySelector('.switch-btn').style = "left: 50%";
+        document.querySelector('.btn-lang').style = "left: 50%";
         ln = 'ru';
         getWeather();
+        translateSettings();
     } else {
-        document.querySelector('.switch-btn').style = "left: 0";
+        document.querySelector('.btn-lang').style = "left: 0";
         ln = 'en';
+        translateSettings();
         getWeather();
     }
 });
+
+document.querySelector('.psource-switch').addEventListener('click', () => {
+    if (bg == 'unsplash') {
+        document.querySelector('.btn-psource').style = "left: 50%";
+        bg = 'git';
+        setBg();
+        console.log(bg);
+    } else {
+        document.querySelector('.btn-psource').style = "left: 0";
+        bg = 'unsplash';
+        setBg();
+    }
+});
+
+document.querySelector('.weather-switch').addEventListener('click', () => {
+    if (!document.querySelector('.weather').classList.contains('weather-hide')) {
+        document.querySelector('.weather').classList.add('weather-hide');
+        document.querySelector('.btn-weather').style = "left: 50%";
+    } else {
+        document.querySelector('.weather').classList.remove('weather-hide');
+        document.querySelector('.btn-weather').style = "left: 0";
+    }
+});
+
+document.querySelector('.time-switch').addEventListener('click', () => {
+    if (!document.querySelector('.time').classList.contains('time-hide')) {
+        document.querySelector('.time').classList.add('time-hide');
+        document.querySelector('.btn-time').style = "left: 50%";
+    } else {
+        document.querySelector('.time').classList.remove('time-hide');
+        document.querySelector('.btn-time').style = "left: 0";
+    }
+});
+
+document.querySelector('.date-switch').addEventListener('click', () => {
+    if (!document.querySelector('.date').classList.contains('date-hide')) {
+        document.querySelector('.date').classList.add('date-hide');
+        document.querySelector('.btn-date').style = "left: 50%";
+    } else {
+        document.querySelector('.date').classList.remove('date-hide');
+        document.querySelector('.btn-date').style = "left: 0";
+    }
+});
+
+document.querySelector('.greeting-switch').addEventListener('click', () => {
+    if (!document.querySelector('.greeting-container').classList.contains('greeting-container-hide')) {
+        document.querySelector('.greeting-container').classList.add('greeting-container-hide');
+        document.querySelector('.btn-greeting').style = "left: 50%";
+    } else {
+        document.querySelector('.greeting-container').classList.remove('greeting-container-hide');
+        document.querySelector('.btn-greeting').style = "left: 0";
+    }
+});
+
+document.querySelector('.audio-switch').addEventListener('click', () => {
+    if (!document.querySelector('.player').classList.contains('player-hide')) {
+        document.querySelector('.player').classList.add('player-hide');
+        document.querySelector('.btn-player').style = "left: 50%";
+    } else {
+        document.querySelector('.player').classList.remove('player-hide');
+        document.querySelector('.btn-player').style = "left: 0";
+    }
+});
+
+const settingsTranslation = {
+    en: ['Language', 'Photosource', 'Time', 'Date', 'Greeting', 'Weather', 'Audio Player'],
+    ru: ['Язык', 'Фоторесурс', 'Время', 'Дата', 'Приветствие', 'Погода', 'Аудио Плейер']
+};
+
+
+function translateSettings() {
+    if (ln == 'ru') {
+        document.getElementById('lang').textContent = settingsTranslation[ln][0];
+        document.getElementById('psource').textContent = settingsTranslation[ln][1];
+        document.getElementById('time').textContent = settingsTranslation[ln][2];
+        document.getElementById('date').textContent = settingsTranslation[ln][3];
+        document.getElementById('greeting').textContent = settingsTranslation[ln][4];
+        document.getElementById('weather').textContent = settingsTranslation[ln][5];
+        document.getElementById('player').textContent = settingsTranslation[ln][6];
+    }
+    else if (ln == 'en') {
+        document.getElementById('lang').textContent = settingsTranslation[ln][0];
+        document.getElementById('psource').textContent = settingsTranslation[ln][1];
+        document.getElementById('time').textContent = settingsTranslation[ln][2];
+        document.getElementById('date').textContent = settingsTranslation[ln][3];
+        document.getElementById('greeting').textContent = settingsTranslation[ln][4];
+        document.getElementById('weather').textContent = settingsTranslation[ln][5];
+        document.getElementById('player').textContent = settingsTranslation[ln][6];
+    }
+};
+
+
+console.log(greetingTranslation);
+
