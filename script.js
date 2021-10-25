@@ -250,6 +250,9 @@ async function getQuotes() {
 getQuotes().then(data => {
     console.log(data);
     let randomQuoteNum = 1;
+    // if (ln == "en") {
+
+    // }
     changeQuote.addEventListener('click', () => {
         randomQuoteNum = Math.floor(Math.random() * (0 - 3) + 3);
         quote.textContent = `${data[randomQuoteNum].text}`;
