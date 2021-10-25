@@ -400,7 +400,7 @@ body {
 
     .greeting-container {
         min-height: 40px;
-        font-size: 32px;
+        font-size: 1.8rem;
     }
 
     .greeting {
@@ -408,12 +408,21 @@ body {
     }
 
     .name {
-        font-size: 32px;
+        font-size: 1.8rem;
         padding: 5px;
     }
 }
 
-@media (max-width: 320px) {
+/* @media (max-width: 375px) {
+    .header {
+        min-height: 16rem;
+    }
+    .weather {
+        width: 43vw;
+    }
+} */
+
+@media (max-width: 400px) {
     .header {
         min-height: 10rem;
     }
@@ -461,7 +470,7 @@ body {
     }
 
     .footer {
-        min-height: 7rem;
+        min-height: 10rem;
         padding: 0.8rem 1rem;
     }
 
