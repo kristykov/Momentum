@@ -202,6 +202,7 @@ let url;
 city.addEventListener('change', (event) => {
     url = `https://api.openweathermap.org/data/2.5/weather?q=${event.target.value}&lang=${ln}&appid=251f169de2acd1482ee4e621040a7f0f&units=metric`;
     getWeather(url);
+    console.log(ln);
 })
 
 async function getWeather(url) {
@@ -380,4 +381,16 @@ const setBtn = document.querySelector('.settings-icon');
 
 setBtn.addEventListener('click', () => {
     document.getElementById('menu-settings').classList.toggle('menu-show');
+});
+
+document.querySelector('.lang-switch').addEventListener('click', () => {
+    if (ln == "en") {
+        document.querySelector('.switch-btn').style = "left: 50%";
+        ln = 'ru';
+        getWeather();
+    } else {
+        document.querySelector('.switch-btn').style = "left: 0";
+        ln = 'en';
+        getWeather();
+    }
 });

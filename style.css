@@ -12,7 +12,7 @@
 
 body {
     min-width: 480px;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     font-family: 'Arial', sans-serif;
     font-size: 16px;
     color: #fff;
@@ -20,6 +20,7 @@ body {
     background: url("assets/img/bg.jpeg") center/cover, rgba(0, 0, 0, 0.5);
     background-blend-mode: multiply;
     transition: background-image 1s ease-in-out;
+    overflow: hidden;
 }
 
 .header {
@@ -28,7 +29,7 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    height: 30vh;
+    /* height: 30vh; */
     min-height: 260px;
     padding: 20px;
 }
@@ -132,7 +133,6 @@ body {
     width: 190px;
     min-height: 185px;
     text-align: left;
-    margin-top: 35px;
 }
 
 .weather-error {
@@ -177,7 +177,7 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 40vh;
+    /* height: 40vh; */
     min-height: 260px;
     padding: 20px;
 }
@@ -253,7 +253,7 @@ body {
     justify-content: flex-end;
     align-items: center;
     width: 100%;
-    height: 30vh;
+    /* height: 30vh; */
     min-height: 160px;
     padding: 20px;
 }
@@ -286,17 +286,17 @@ body {
 }
 
 .menu {
-    width: 0;
+    width: 14rem;
     overflow: hidden;
     transition: all 1s;
     position: absolute;
     bottom: 6rem;
-    right: 0;
+    right: -14rem;
     height: 18rem;
 }
 
 .menu-show {
-    width: 13rem;
+    right: 1rem;
 }
 
 .menu-links {
