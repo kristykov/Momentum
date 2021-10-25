@@ -90,23 +90,16 @@ function getTimeOfDay() {
 
 function showGreeting() {
     let timeOfDay = getTimeOfDay();
-    console.log(ln);
-    console.log(timeOfDay);
+
     if (ln == 'en') {
         greetingText = `Good ${timeOfDay}`;
     }
-    // else if (ln == 'ru') {
-    //     greetingText = `Добрый ${timeOfDay}`;
-    // }
-    console.log(greetingTranslation[ln]);
-    console.log(greetingText);
+
     greetingTranslation[ln].forEach(el => {
         if (greetingText == el) {
             greeting.textContent = el;
         }
     })
-
-    // greeting.textContent = greetingTranslation.ln[0];
 }
 
 //Store user's name
@@ -177,7 +170,6 @@ function getSlideNext() {
 // getSlideNext();
 function getSlidePrev() {
     bgNum = parseInt(bgNum) - 1;
-    // console.log(bgNum);
     if (bgNum < 10 && bgNum > 0) {
 
         bgNum = '0' + bgNum;
@@ -200,20 +192,21 @@ const humidity = document.querySelector('.humidity');
 let url;
 
 city.addEventListener('change', (event) => {
-    url = `https://api.openweathermap.org/data/2.5/weather?q=${event.target.value}&lang=${ln}&appid=251f169de2acd1482ee4e621040a7f0f&units=metric`;
+    url = `https://api.openweathermap.org/data/2.5/weather?q=${event.target.value}&lang=${ln}&appid=9022b0daa7aff96a90261bd8709ddbc5&units=metric`;
     getWeather(url);
-    console.log(ln);
+
 })
 
 async function getWeather(url) {
     try {
-        url = url || `https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=${ln}&appid=251f169de2acd1482ee4e621040a7f0f&units=metric`;
+        url = url || `https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=${ln}&appid=9022b0daa7aff96a90261bd8709ddbc5&units=metric`;
         const res = await fetch(url);
         const data = await res.json();
         weatherIcon.className = 'weather-icon owf';
         weatherIcon.classList.add(`owf-${data.weather[0].id}`);
         temperature.textContent = `${Math.floor(data.main.temp)}°C`;
         weatherDescription.textContent = data.weather[0].description;
+
         if (ln == 'en') {
             wind.textContent = `Wind speed: ${Math.floor(data.wind.speed)} m/s`;
             humidity.textContent = `Humidity: ${Math.floor(data.main.humidity)}%`;
@@ -221,8 +214,6 @@ async function getWeather(url) {
             wind.textContent = `Скорость ветра: ${Math.floor(data.wind.speed)} м/с`;
             humidity.textContent = `Влажность: ${Math.floor(data.main.humidity)}%`;
         }
-        // document.querySelector('.weather-error').style.display = 'none';
-        console.log(data.weather[0].id, data.weather[0].description, data.main.temp);
     } catch (e) {
         document.querySelector('.weather-error').textContent = 'Error! City is not found';
         temperature.style.display = 'none';
@@ -248,11 +239,7 @@ async function getQuotes() {
 }
 
 getQuotes().then(data => {
-    console.log(data);
-    // let randomQuoteNum = 1;
-    console.log(ln);
     changeQuote.addEventListener('click', () => {
-        console.log(ln);
         let randomQuoteNum = 1;
         if (ln == "en") {
             randomQuoteNum = Math.floor(Math.random() * (0 - 3) + 3);
@@ -272,27 +259,37 @@ getQuotes().then(data => {
 const btn = document.querySelector('.play');
 const audio = new Audio();
 let isPlay = false;
-
 function playAudio() {
     if (!isPlay) {
+        let songListItems = document.querySelectorAll('.play-item');
         audio.currentTime = 0;
         audio.src = playList[playNum].src;
+        songListItems[playNum].classList.add('item-active');
 
-
-        let items = document.querySelectorAll('.play-item');
-        console.log(items[1]);
-        for (let i = 0; i < items.length; i++) {
-            if (playList[playNum].title == items[playNum].textContent) {
-                items[playNum].classList.add('item-active');
-            }
-            console.log(items);
-
+        let activeSongItem = Array.from(songListItems).find((item) => {
+            item.classList.contains('item-active');
+        });
+        if (activeSongItem) {
+            activeSongItem.classList.remove('item-active');
         }
-        console.log(playList[playNum].title);
+        // songListItems[playNum].classList.add('item-active');
+
+
+
+        // for (let i = 0; i < items.length; i++) {
+        //     if (playList[playNum].title == items[playNum].textContent) {
+        //         console.log(items[playNum]);
+        //         if (!items[playNum].classList.contains('item-active')) {
+        //             items[playNum].classList.add('item-active');
+        //         }
+        //         else {
+        //             items[playNum].classList.remove('item-active');
+        //         }
+        //     }
+        //     console.log(items);
+        // }
         // console.log(document.querySelector('.play-item').textContent == playList.title);
         // audio.src = `assets/sounds/${playNum}.mp3`;
-
-
 
         audio.play();
         isPlay = true;
@@ -301,6 +298,17 @@ function playAudio() {
         isPlay = false;
     }
 }
+
+// let songListItems = document.querySelectorAll('.play-item');
+
+// function changeSongLabel() {
+//     let activeSongItem = Array.from(songListItems).find((item) => {
+//         item.classList.contains('item-active');
+//     });
+//     if (activeSongItem) {
+//         activeSongItem.classList.remove('item-active');
+//     }
+// }
 
 
 
@@ -317,7 +325,7 @@ const playPrevBtn = document.querySelector('.play-prev');
 
 
 function playNext() {
-    console.log(playNum);
+
     if (playNum < 3) {
         playNum = playNum + 1;
     } else if (playNum = 3) {
@@ -325,12 +333,12 @@ function playNext() {
     }
     isPlay = false;
     playAudio();
-    console.log(playNum);
+
 }
 
 
 function playPrev() {
-    console.log(playNum);
+
     if (playNum == 0) {
         playNum = 3;
     } else if (playNum > 0) {
@@ -422,7 +430,7 @@ document.querySelector('.psource-switch').addEventListener('click', () => {
         document.querySelector('.btn-psource').style = "left: 50%";
         bg = 'git';
         setBg();
-        console.log(bg);
+
     } else {
         document.querySelector('.btn-psource').style = "left: 0";
         bg = 'unsplash';
@@ -508,5 +516,5 @@ function translateSettings() {
 };
 
 
-console.log(greetingTranslation);
+
 

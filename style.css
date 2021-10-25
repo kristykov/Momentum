@@ -11,10 +11,10 @@
 }
 
 body {
-    min-width: 480px;
+    /* min-width: 480px; */
     min-height: 100vh;
     font-family: 'Arial', sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     color: #fff;
     text-align: center;
     background: url("assets/img/bg.jpeg") center/cover, rgba(0, 0, 0, 0.5);
@@ -30,8 +30,8 @@ body {
     align-items: flex-start;
     width: 100%;
     /* height: 30vh; */
-    min-height: 260px;
-    padding: 20px;
+    min-height: 20rem;
+    padding: 1rem;
 }
 
 .player {
@@ -46,8 +46,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 120px;
-    margin-bottom: 28px;
+    width: 8rem;
+    margin-bottom: 2rem;
 }
 
 .play-list {
@@ -56,8 +56,8 @@ body {
 
 .play-item {
     position: relative;
-    padding: 5px;
-    padding-left: 20px;
+    padding: .5rem;
+    padding-left: 1.5rem;
     list-style: none;
     opacity: .8;
     cursor: pointer;
@@ -72,7 +72,7 @@ body {
     content: "\2713";
     position: absolute;
     left: 0;
-    top: 2px;
+    top: .5rem;
     font-weight: 900;
 }
 
@@ -410,5 +410,62 @@ body {
     .name {
         font-size: 32px;
         padding: 5px;
+    }
+}
+
+@media (max-width: 320px) {
+    .header {
+        min-height: 10rem;
+    }
+
+    .weather {
+        width: 8rem;
+        min-height: 12rem;
+    }
+
+    .main {
+        padding: 0 1rem;
+        min-height: 10rem;
+    }
+
+    .slide-prev {
+        left: .5rem;
+    }
+
+    .slide-next {
+        right: .5rem;
+    }
+
+    .play-item {
+        font-size: 0.8rem;
+    }
+
+    .city {
+        width: 7rem;
+    }
+
+    .time {
+        font-size: 3.5rem;
+    }
+
+    .date {
+        font-size: 1.3rem;
+    }
+
+    .greeting-container {
+        font-size: 1.2rem;
+    }
+
+    .name {
+        font-size: 1.2rem;
+    }
+
+    .footer {
+        min-height: 7rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .settings {
+        top: 5%;
     }
 }
